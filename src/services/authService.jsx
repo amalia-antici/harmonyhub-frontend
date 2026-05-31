@@ -12,6 +12,8 @@ const LEGACY_KEYS = {
 
 const INACTIVITY_TIMEOUT = 15 * 60 * 1000; // 15 minutes
 
+const BASE_URL = import.meta.env.VITE_API_URL || '';
+
 function readStorageItem(primaryKey, legacyKey) {
   return localStorage.getItem(primaryKey) ?? localStorage.getItem(legacyKey);
 }
@@ -81,7 +83,7 @@ export function isAdmin() {
 }
 
 async function apiRequest(path, body) {
-  const response = await fetch(path, {
+  const response = await fetch(`${BASE_URL}${path}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -93,7 +95,9 @@ async function apiRequest(path, body) {
   const isJson = contentType.includes('application/json');
 
   if (!response.ok) {
-    const errorText = isJson ? await response.json().then(json => json?.message || JSON.stringify(json)).catch(() => response.statusText) : await response.text();
+    const errorText = isJson
+      ? await response.json().then(json => json?.message || JSON.stringify(json)).catch(() => response.statusText)
+      : await response.text();
     throw new Error(errorText || 'Request failed');
   }
 
@@ -125,18 +129,30 @@ export function loginStep1(username, password) {
   return apiRequest('/api/auth/login/step1', { username, password });
 }
 
-export function loginStep2(partialToken, emailOtp) {
-  return fetch('/api/auth/login/step2', {
+export async function loginStep2(partialToken, emailOtp) {
+  const response = await fetch(`${BASE_URL}/api/auth/login/step2`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${partialToken}` },
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${partialToken}`
+    },
     body: JSON.stringify({ emailOtp })
-  }).then(r => r.json());
+  });
+  const text = await response.text();
+  if (!response.ok) throw new Error(text);
+  return JSON.parse(text);
 }
 
-export function loginStep3(partialToken, securityAnswer) {
-  return fetch('/api/auth/login/step3', {
+export async function loginStep3(partialToken, securityAnswer) {
+  const response = await fetch(`${BASE_URL}/api/auth/login/step3`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${partialToken}` },
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${partialToken}`
+    },
     body: JSON.stringify({ securityAnswer })
-  }).then(r => r.json());
+  });
+  const text = await response.text();
+  if (!response.ok) throw new Error(text);
+  return JSON.parse(text);
 }

@@ -1,6 +1,8 @@
 import { getToken } from './authService.jsx';
 
-const API_URL = '/api/events';
+const API_URL = import.meta.env.VITE_API_URL
+  ? `${import.meta.env.VITE_API_URL}/api/events`
+  : '/api/events';
 
 // Normalize event objects returned by the backend into the shape the frontend expects
 export const normalizeEvent = (e) => {
@@ -21,7 +23,6 @@ export const normalizeEvent = (e) => {
     FormLink: e.FormLink ?? e.formLink ?? e.form_link,
     Tags: e.Tags ?? e.tags ?? [],
     createdBy: e.createdBy ?? e.created_by ?? e.created_by_user_id ?? e.CreatedBy ?? e.owner,
-    // keep any other properties as-is
     ...e
   };
 };
