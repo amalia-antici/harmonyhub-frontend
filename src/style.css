@@ -1,0 +1,630 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+
+.logo-place {
+    display: flex;
+    justify-content: center; 
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 0;
+    border-bottom: 1px solid #e0e0e0; 
+    position: relative;
+    width:100%
+}
+
+.logo img {
+    height: 70px;
+    margin-bottom: 10px;
+}
+
+.user-profile {
+    position: static;
+    right: 40px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.user-profile img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+}
+
+/* Navigation Bar */
+.nav-bar {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 40px;
+    border-bottom: 1px solid #ddd;
+    margin: 0 auto;
+    width:100%;
+    max-width: 1000px;
+    height:auto;
+}
+
+.nav-bar-elem {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+}
+
+.nav-bar-elem a{
+    padding: 15px 0;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    color: black;
+}
+
+
+.log-out a {
+    color: #880b0b;
+    padding: 15px 0;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.nav-bar-elem a:nth-child(6) {
+    color: #ffcc00;
+}
+
+.introduction {
+    position: relative; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-top: 20px;
+    clear:both;
+
+}
+@media (max-width: 600px) {
+    .introduction button {
+        padding: 10px 30px;
+        font-size: 1rem;
+        bottom: 20px;
+    }
+}
+
+.introduction img {
+    width: 100%; 
+    max-width: 1000px;
+    display: block;
+}
+
+.introduction button {
+    position: absolute; 
+    bottom: 40px;       
+    background-color: #222;
+    color: white;
+    border: none;
+    padding: 15px 60px;
+    font-size: 1.2rem;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.introduction button:hover {
+    background-color: #444;
+}
+
+/*-------------------------------------- Events Container--------------------------------------------- */
+.events-container {
+    width: 90%;
+    max-width: 1000px;
+    margin: 20px auto;
+}
+
+.view-selector {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+}
+
+.view-selector select {
+    padding: 8px 15px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+}
+
+
+.event-item {
+    display: grid;
+    grid-template-columns: 80px 2fr 1fr 1fr 1fr;
+    align-items: center;
+    background-color: #E0E0E0;
+    padding: 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 15px; 
+    flex-grow: 1;
+}
+
+.event-item, .event-card-container{
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+.event-item:hover, .event-card-container:hover {
+    transform: translateY(-5px); 
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    background-color: #D4D4D4;
+}
+
+.event-item:hover {
+    background-color: #D4D4D4;
+}
+
+.event-icon {
+    width: 40px;
+    height: 40px;
+    background: url('event-placeholder.png') no-repeat center;
+    background-size: contain;
+}
+
+.event-title { font-weight: 700; font-size: 0.95rem; }
+.event-date, .event-loc { color: #333; font-size: 0.9rem; }
+
+.genre-green{
+    color: #2D6A4F;
+    font-weight: 700;
+}
+
+.genre-black{
+    color: black;
+    font-weight: 700;
+}
+
+.event-genre {
+    font-weight: 700;
+    text-align: right;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-top: 40px;
+    color: #666;
+    font-size: 0.85rem;
+}
+
+.page-num.active {
+    background-color: #333;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+.page-nav, .page-num { cursor: pointer; }
+
+.event-row-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+
+
+
+.edit-action-btn {
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    height: fit-content;
+}
+
+.edit-action-btn:hover {
+    background-color: #555;
+}
+
+
+/* ------------------------------------------Details View Styling-------------------------------------------*/
+.details-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 40px 0;
+}
+
+.details-card-outer {
+    background-color: #E0E0E0; /* Light grey outer box */
+    width: 85%;
+    max-width: 900px;
+    border-radius: 40px;
+    padding: 40px;
+    text-align: center;
+}
+
+.details-card-outer h2 {
+    font-size: 2rem;
+    margin-bottom: 25px;
+}
+
+.details-card-inner {
+    background-color: #C4B29F; 
+    border-radius: 30px;
+    padding: 40px;
+    display: flex;
+    justify-content: space-between;
+    text-align: left;
+    gap: 20px;
+}
+
+.details-title {
+    font-size: 1.8rem;
+    text-decoration: underline;
+    margin-bottom: 10px;
+}
+
+.details-info-grid p {
+    margin: 10px 0;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.details-description-box {
+    background-color: #D9D9D9;
+    border-radius: 20px;
+    width: 45%;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #555;
+}
+
+/* -------------------------------------------Edit Event -----------------------------*/
+
+.crud-btn {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+}
+.green { background-color: #2D6A4F; }
+.blue { background-color: #316cf4; }
+.red { background-color: #880b0b; }
+.black{ background-color: #333;}
+
+.edit-pill {
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 5px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    margin-left: 10px;
+}
+
+input, select {
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+}
+/*-----------------------------ATTEND BUTTON--------------------------*/
+
+.action-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.attend-btn {
+  padding: 8px 15px;
+  border-radius: 5px;
+  border: 1px solid #333;
+  background: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.attend-btn.active {
+  background: #4caf50;
+  color: white;
+  border-color: #4caf50;
+}
+
+.attend-btn:hover {
+  opacity: 0.8;
+}
+
+/*-------------------EVENT CARDS VIEW-------------*/
+
+/* Container for Cards View */
+.events-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  padding: 20px;
+}
+
+.event-card-container {
+  display: flex;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.card-image-wrapper {
+  position: relative;
+  flex: 1; /* Takes up half the card */
+  min-height: 250px;
+}
+
+.card-main-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-overlay-actions {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  display: flex;
+  gap: 8px;
+}
+
+.card-details {
+  flex: 1; /* Takes up the other half */
+  padding: 20px;
+  text-align: left;
+}
+
+.see-details-btn {
+  background-color: #333;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 15px;
+}
+
+/* --- Phone & Small Devices --- */
+@media (max-width: 768px) {
+  /* 1. Stack the Cards */
+  .event-card-container {
+    flex-direction: column; /* Image on top, text below */
+    max-width: 100%;
+  }
+
+  .card-image-wrapper {
+    width:100%;
+    height: 200px; /* Fixed height for mobile image */
+  }
+
+  /* 2. Adjust the List View */
+  .event-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  /* 3. Make Buttons full width on mobile */
+  .list-actions, .see-details-btn {
+    width: 100%;
+    display: flex;
+    justify-content: stretch;
+  }
+  
+  .attend-btn, .edit-action-btn {
+    flex: 1;
+    text-align: center;
+  }
+
+  /* 4. Navigation adjustments */
+  .view-selector select {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  .card-details{
+    padding:15px;
+  }
+}
+
+/*-------------------NAVBAR RESPONSIVE------------*/
+
+/* Base Navbar Styling */
+@media (min-width: 769px) {
+    .logo-place {
+        flex-direction: row; /* Horizontal on desktop */
+    }
+
+    .user-profile {
+        position: absolute; /* Return to side position on desktop */
+        right: 40px;
+        margin-top:0;
+    }
+
+    .nav-bar {
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 0 40px;
+    }
+
+    .nav-bar-elem {
+        gap: 30px;
+    }
+
+    .nav-bar-elem a {
+        font-size: 0.9rem;
+        padding: 15px 0;
+    }
+}
+
+/*----------REGISTER RESPONSIVE--------*/
+
+.register-container, .details-card-outer {
+    width: 95%; /* Take up most of the screen on mobile */
+    margin: 20px auto;
+    padding: 20px;
+    height: auto; /* Allow it to grow with content */
+}
+
+
+@media (max-width: 768px) {
+  .form-columns {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap:15px;
+    }
+    
+    /* Ensure the "Musician" and "Register" titles stay centered */
+    .register-container h1, .register-container h2 {
+        text-align: center;
+    }
+    input, select, .details-description-box{
+        width:100%;
+    }
+    .details-card-inner{
+        flex-direction: column;
+        padding:20px;
+    }
+}
+
+@media(max-width:600px)
+{
+    .logo-text {
+    font-size: 1.2rem;   /* Shrink logo on phone */
+  }
+  
+  .navbar-links a {
+    font-size: 0.8rem;   /* Smaller font for mobile links */
+  }
+}
+
+/* The Animation Keyframes */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px); /* Starts 30px lower */
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);    /* Ends at its natural position */
+    }
+}
+
+/* The Class to trigger it */
+.fade-in-up {
+    animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.delay-1 { animation-delay: 0.2s; }
+.delay-2 { animation-delay: 0.4s; }
+
+.attend-btn:active, .see-details-btn:active {
+    transform: scale(0.95); /* Mimics a physical button press */
+}
+
+.input-field input, .input-field textarea {
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.input-field input:focus {
+    background-color: #ffffff;
+    border-color: #8b7d77; /* Matches your join button color */
+    outline: none;
+    box-shadow: 0 0 8px rgba(139, 125, 119, 0.3);
+}
+
+
+/* --- Dashboard Layout (Parallel View) --- */
+.dashboard-flex-container {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+    width: 100%;
+    margin-top: 20px;
+}
+
+/* The List Side */
+.list-side {
+    flex: 2; /* Takes up 2/3 of the space */
+    min-width: 0; /* Prevents flex items from overflowing */
+}
+
+/* The Statistics Side */
+.statistics-side {
+    flex: 1; /* Takes up 1/3 of the space */
+    position: sticky;
+    top: 20px; /* Keeps the chart visible as you scroll the list */
+    background: #f9f9f9;
+    padding: 25px;
+    border-radius: 15px;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.statistics-side h3 {
+    font-size: 1.2rem;
+    color: #333;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+/* --- Recharts Customization --- */
+.recharts-cartesian-grid-horizontal line,
+.recharts-cartesian-grid-vertical line {
+    stroke: #eee; /* Lighten the grid lines for a cleaner look */
+}
+
+.recharts-default-tooltip {
+    border-radius: 8px !important;
+    border: none !important;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+/* --- Responsive Breakpoint (Crucial for the "Phone" test) --- */
+@media (max-width: 1024px) {
+    .dashboard-flex-container {
+        flex-direction: column; /* Stack vertically on smaller screens/tablets */
+    }
+
+    .statistics-side {
+        position: static; /* Remove sticky on mobile */
+        width: 100%;
+        order: -1; /* Move chart to TOP on mobile so they see stats first */
+        margin-bottom: 30px;
+    }
+    
+    .list-side {
+        width: 100%;
+    }
+}
+
+/* --- Animation for Chart Bars --- */
+.recharts-rectangle {
+    transition: all 0.5s ease;
+}

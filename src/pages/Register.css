@@ -1,0 +1,130 @@
+* {
+    box-sizing: border-box; /* Ensures padding doesn't break widths */
+}
+.register-main {
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+  background-color: #f8f9fa;
+  min-height: 90vh;
+}
+
+.register-container {
+  background-color: #cccccc; /* The gray background from wireframe */
+  padding: 40px;
+  width: 90%;
+  max-width: 1100px;
+  border-radius: 4px;
+}
+
+.register-header-section {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+  gap:10px;
+  width:100%;
+  margin-bottom: 30px;
+}
+
+@media (max-width: 600px) {
+    .register-header {
+        flex-direction: column; /* Stacks titles vertically */
+        text-align: center;
+    }
+    
+    .register-header h1, .register-header h2 {
+        font-size: 1.5rem; /* Shrinks the text so it fits the narrow screen */
+        margin: 5px 0;
+    }
+}
+
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 300;
+}
+
+.profile-upload {
+  text-align: center;
+  color: #333;
+}
+
+.profile-placeholder {
+  width: 100px;
+  height: 100px;
+  background-color: #999;
+  border-radius: 50%;
+  margin: 0 auto 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-placeholder svg {
+  width: 60%;
+  color: #666;
+}
+
+.form-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 30px;
+}
+
+.input-field {
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.input-field label {
+  margin-bottom: 5px;
+  font-size: 0.9rem;
+}
+
+.input-field input, .input-field textarea {
+  border: none;
+  padding: 8px;
+  background-color: #d9d9d9;
+}
+
+.join-btn {
+  display: block;
+  margin: 40px auto 0;
+  padding: 15px 80px;
+  background-color: #8b7d77; /* Brownish-gray from wireframe */
+  color: white;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+@media (max-width: 600px) {
+    .section-title {
+        font-size: 1.8rem; 
+    }
+}
+
+.form-columns {
+    display: flex;
+    flex-direction: column; 
+    gap: 20px;
+    width: 100%;
+}
+
+.input-field input, .input-field textarea {
+    width: 100%; 
+}
+
+.input-field input, .input-field textarea {
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.input-field input:focus {
+    background-color: #ffffff;
+    border-color: #8b7d77; /* Matches your join button color */
+    outline: none;
+    box-shadow: 0 0 8px rgba(139, 125, 119, 0.3);
+}
