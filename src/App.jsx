@@ -307,10 +307,8 @@ function App() {
   
 useEffect(() => {
     const token = getToken();
-    const wsBase = import.meta.env.VITE_API_URL
-  ? import.meta.env.VITE_API_URL.replace('https://', 'wss://').replace('http://', 'ws://')
-  : '';
-const socket = new SockJS(`${wsBase}/ws-events${token ? `?token=${encodeURIComponent(token)}` : ''}`);
+    const wsBase = import.meta.env.VITE_API_URL || '';
+    const socket = new SockJS(`${wsBase}/ws-events${token ? `?token=${encodeURIComponent(token)}` : ''}`);
     const stompClient = Stomp.over(socket);
     stompClient.debug = null;
     const connectHeaders = token ? { Authorization: `Bearer ${token}` } : {};

@@ -51,6 +51,7 @@ async function fetchJson(path, options = {}) {
 
 export async function getEvents(page = 0, size = 10) {
   const payload = await fetchJson(`${API_URL}?page=${page}&size=${size}`);
+  if (!payload) return [];
   if (Array.isArray(payload)) return payload.map(normalizeEvent);
   return payload;
 }
