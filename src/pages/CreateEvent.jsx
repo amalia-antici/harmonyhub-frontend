@@ -160,11 +160,11 @@ export default function CreateEvent({ saveEvent, deleteEvent }) {
           <div className="details-card-inner">
             {/* Image Upload Section */}
             <div className="image-upload-wrapper">
-              <label htmlFor="file-upload" className="image-placeholder-box" style={{ cursor: 'pointer' }}>
+              <label htmlFor="file-upload" className="image-placeholder-box">
                 <img 
                   src={form.PhotoUrl} 
                   alt="upload" 
-                  style={{ width: '200px', height: '200px', objectFit: 'cover', borderRadius: '8px' }} 
+                  className="image-preview"
                 />
                 <p>{form.Id ? "Change Image" : "+ Add Image"}</p>
               </label>
@@ -318,38 +318,28 @@ export default function CreateEvent({ saveEvent, deleteEvent }) {
               </div>
 
         {/* --- TAG MANAGER SECTION --- */}
-        <div className="field" style={{ gridColumn: '1 / -1' }}> 
+        <div className="field field-full-width tag-manager"> 
           <label>Event Tags:</label>
-          <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
+          <div className="tag-input-row">
             <input 
               type="text" 
               value={tagName} 
               onChange={(e) => setTagName(e.target.value)}
               placeholder="e.g. Sold Out, Live"
-              style={{ flex: 1 }}
             />
-            <button type="button" className="crud-btn black" onClick={addTag} style={{ padding: '5px 15px' }}>
+            <button type="button" className="crud-btn black small" onClick={addTag}>
               Add
             </button>
           </div>
 
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+          <div className="tag-list">
             {form.tags?.map((tag, index) => (
-              <span key={index} style={{ 
-                background: '#333', 
-                color: '#fff', 
-                padding: '4px 12px', 
-                borderRadius: '20px',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                fontSize: '14px'
-              }}>
+              <span key={index} className="tag-pill">
                 {tag.Name || tag.name}
                 <button 
                   type="button" 
                   onClick={() => removeTag(index)}
-                  style={{ border: 'none', background: 'none', color: '#ff4d4d', cursor: 'pointer', fontWeight: 'bold' }}
+                  className="tag-remove-btn"
                 >
                   ×
                 </button>
@@ -361,7 +351,7 @@ export default function CreateEvent({ saveEvent, deleteEvent }) {
             </div>
           </div>
 
-          <div className="form-actions" style={{ marginTop: '30px', display: 'flex', gap: '15px', justifyContent: 'center' }}>
+          <div className="form-actions">
             <button className="crud-btn black" onClick={handleSubmit}>
                 {form.Id ? "Update Event" : "Add Event"}
             </button>

@@ -48,6 +48,12 @@ export default function EventDetails() {
   const canEdit = isAdmin || isOwner;
   // --- PERMISSION LOGIC END ---
 
+  const eventImage = event?.PhotoUrl || "/image_placeholder.avif";
+  const eventTags = (event?.Tags || event?.tags || []).map((Tag, index) => ({
+    id: Tag.Id || Tag.id || index,
+    name: Tag.Name || Tag.name || Tag,
+  }));
+
   if (loading && !event) {
     return (
       <>
@@ -79,78 +85,75 @@ export default function EventDetails() {
       <Navbar />
       <main className="details-container">
         {isPendingId && (
-          <div style={{ 
-            backgroundColor: '#fff3cd', 
-            color: '#856404', 
-            padding: '10px', 
-            textAlign: 'center', 
-            borderRadius: '8px',
-            marginBottom: '20px',
-            fontSize: '14px'
-          }}>
+          <div className="pending-alert">
             ⏳ This event is currently saved locally and will sync when the server is online.
           </div>
         )}
 
         <div className="details-card-outer">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <h2>Event Details</h2>
-            
-            {/* UPDATED: Only show button if user has permission */}
-            {canEdit && (
-              <button 
-                className="crud-btn black" 
-                onClick={() => navigate("/create", { state: { id: event.Id || event.id, event: event } })}
-                disabled={isPendingId && !navigator.onLine}
-              >
-                Edit Event
-              </button>
-            )}
+          <div className="details-hero" style={{ backgroundImage: `url(${eventImage})` }}>
+            <div className="details-hero-overlay">
+              <div className="details-hero-badge">{event.Genre || 'Event'}</div>
+              <h1>{event.Title}</h1>
+              <p>{event.Location} · {event.City}, {event.Country || 'Romania'}</p>
+              <div className="hero-meta-row">
+                <span>📅 {formatDate(event.DateTime)}</span>
+                <span>⏰ {formatTime(event.DateTime)}</span>
+              </div>
+            </div>
           </div>
 
           <div className="details-card-inner">
-            <div className="details-info-grid" style={{ flex: 1 }}>
-              <h3 className="details-title">
-                {event.Title}
-                {isPendingId && <span style={{ fontSize: '16px', marginLeft: '10px' }}>⏳</span>}
-              </h3>
-              <p style={{ marginBottom: "15px", fontWeight: "600" }}>
-                {event.City}, {event.Country || "Romania"}
-              </p>
+            <div className="details-info-grid">
+              <div className="details-summary-card">
+                <div className="summary-header">
+                  <h2>Event Info</h2>
+                  {canEdit && (
+                    <button
+                      className="crud-btn black small"
+                      onClick={() => navigate("/create", { state: { id: event.Id || event.id, eventData: event } })}
+                      disabled={isPendingId && !navigator.onLine}
+                    >
+                      Edit
+                    </button>
+                  )}
+                </div>
 
-              <div className="details-info-list" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                <p>📅 {formatDate(event.DateTime)}</p>
-                <p>⏰ {formatTime(event.DateTime)}</p>
-                <p>🎵 Open to {event.Genre}!</p>
-                <p>🏠 {event.Location} </p>
-                <p>🔗 {event.FormLink || "No link provided"}</p>
-                <p>👥 {event.ReservedSpots || 0} people / {event.Capacity} total capacity</p>
-                
+                <div className="details-meta-list">
+                  <div className="meta-row"><span>Genre</span><strong>{event.Genre || '—'}</strong></div>
+                  <div className="meta-row"><span>Venue</span><strong>{event.Location || '—'}</strong></div>
+                  <div className="meta-row"><span>City</span><strong>{event.City || '—'}</strong></div>
+                  <div className="meta-row"><span>Spots</span><strong>{event.ReservedSpots || 0} / {event.Capacity || '—'}</strong></div>
+                  <div className="meta-row"><span>Form</span><strong>{event.FormLink ? <a href={event.FormLink} target="_blank" rel="noreferrer">Open form</a> : 'No link provided'}</strong></div>
+                </div>
+
                 <div className="details-tags">
-                  {(event.Tags || event.tags)?.map((Tag, index) => (
-                    <span key={Tag.Id || Tag.id || index} className="tag-badge">
-                      #{Tag.Name || Tag.name}
-                    </span>
-                  ))}
+                  {eventTags.length ? eventTags.map(tag => (
+                    <span key={tag.id} className="tag-badge">#{tag.name}</span>
+                  )) : <span className="tag-pill">No tags yet</span>}
+                </div>
+
+                <button className="crud-btn blue" onClick={() => navigate('/events')}>
+                  ← Back to Events
+                </button>
+              </div>
+
+              <div className="details-description-box">
+                <div>
+                  <h2>About this event</h2>
+                  <p>{event.Description || `No description has been provided for this event yet.`}</p>
+                </div>
+
+                <div className="host-card">
+                  <div>
+                    <span>Hosted by</span>
+                    <strong>{eventCreator?.username || 'Unknown host'}</strong>
+                  </div>
+                  <div className="host-meta">
+                    <span>{eventCreator?.email || 'No contact info'}</span>
+                  </div>
                 </div>
               </div>
-              
-              <button 
-                className="crud-btn black" 
-                style={{ marginTop: "30px", width: "fit-content" }}
-                onClick={() => navigate("/events")}
-              >
-                ← Back to List
-              </button>
-            </div>
-            
-            <div className="details-description-box" style={{ flex: 1, textAlign: 'center' }}>
-              <p>{event.Description || `Full description for ${event.Title}.`}</p>
-              {event.createdBy && (
-                <p style={{ marginTop: '20px', fontSize: '0.9rem', color: '#666' }}>
-                  Hosted by: <strong>{event.createdBy.username}</strong>
-                </p>
-              )}
             </div>
           </div>
         </div>

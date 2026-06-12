@@ -57,7 +57,10 @@ export async function getEvents(page = 0, size = 10) {
 }
 
 export async function getEventById(id) {
-  const payload = await fetchJson(`${API_URL}/${id}`);
+  const payload = await fetchJson(`${API_URL}/${id}`, {
+    method: 'GET',
+    headers: buildHeaders() 
+  });
   return normalizeEvent(payload);
 }
 
@@ -98,26 +101,7 @@ export async function getObservationList() {
   });
 }
 
-export async function getGeneratorStatus() {
-  return fetchJson(`${API_URL}/generator-status`, {
-    method: 'GET',
-    headers: buildHeaders(),
-  });
-}
-
-export async function startGenerator() {
-  return fetchJson(`${API_URL}/start-generator`, {
-    method: 'POST',
-    headers: buildHeaders(),
-  });
-}
-
-export async function stopGenerator() {
-  return fetchJson(`${API_URL}/stop-generator`, {
-    method: 'POST',
-    headers: buildHeaders(),
-  });
-}
+// generator status endpoint removed
 
 export const validateEvent = (event) => {
   return event.Title?.trim().length > 3 && event.City?.trim().length > 2;
@@ -132,4 +116,22 @@ export async function getAiAnalysis() {
     method: 'GET',
     headers: buildHeaders(),
   });
+}
+
+export async function searchEvents(page = 0, size = 10, filters = {}) {
+  const params = new URLSearchParams({ page, size });
+  if (filters.genre && filters.genre !== 'ALL') params.append('genre', filters.genre);
+  if (filters.city?.trim()) params.append('city', filters.city.trim());
+  if (filters.date) params.append('date', filters.date);
+  const payload = await fetchJson(`${API_URL}/search?${params}`);
+  if (!payload) return [];
+  if (Array.isArray(payload)) return payload.map(normalizeEvent);
+  return payload;
+}
+
+export async function toggleEventAttendance(id, isAttending) {
+  return fetchJson(`${API_URL}/${id}/attend?isAttending=${isAttending}`, {
+    method: 'PATCH',
+    headers: buildHeaders(),
+  }).then(normalizeEvent);
 }

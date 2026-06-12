@@ -1,20 +1,27 @@
 import { useState, useEffect, useCallback, useRef} from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { getCurrentUser, getToken, refreshSessionIfActive, clearSession, setLastActivity, isAdmin as isAdminUser } from './services/authService.jsx';
-import { getEvents, createEvent, updateEvent, deleteEventById, getGeneratorStatus, normalizeEvent } from './services/eventServices.jsx';
+import { getEvents, createEvent, updateEvent, deleteEventById, normalizeEvent } from './services/eventServices.jsx';
 import Home from "./pages/Home";
 import Events from "./pages/Events";
 import CreateEvent from "./pages/CreateEvent";
 import EventDetails from "./pages/EventDetails";
+import Profile from "./pages/Profile";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 import Chat from "./pages/Chat";
-import AdminDashboard from "./pages/AdminDashboard";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
+import ChallengePage from './pages/ChallengePage';
+import AdminDashboard from './pages/AdminDashboard.jsx';
+import VoiceFeed from './pages/VoiceFeed';
+import ConnectPage from './pages/ConnectPage';
 import "./style.css";
+import PoetryBoard from "./pages/PoetryBoard.jsx";
+import QuizPage from './pages/QuizPage';
+import { toggleEventAttendance } from './services/eventServices.jsx';
 
 
 function App() {
@@ -39,6 +46,42 @@ function App() {
   };
 
   const [events, setEvents] = useState(() => loadSavedEvents());
+
+  const handleAttendToggle = async (eventId) => {
+  // 1. Determine if the user is currently attending this specific event
+  const isCurrentlyAttending = attendingIds.includes(eventId);
+
+  try {
+    // 2. Call the backend API service patch method we just created
+    const updatedEvent = await toggleEventAttendance(eventId, isCurrentlyAttending);
+
+    // 3. Update the global events array state instantly so the counts change in UI
+    setEvents(prevEvents => prevEvents.map(event => {
+      if (event.Id === eventId) {
+        return {
+          ...event,
+          // Sync with the normalized property format returned from the service call
+          ReservedSpots: updatedEvent.ReservedSpots
+        };
+      }
+      return event;
+    }));
+
+    // 4. Update your attending checklist state array
+    if (isCurrentlyAttending) {
+      // Remove from list (Unattended)
+      setAttendingIds(prev => prev.filter(id => id !== eventId));
+    } else {
+      // Add to list (Attended)
+      setAttendingIds(prev => [...prev, eventId]);
+    }
+
+  } catch (error) {
+    console.error("Attendance update failed:", error);
+    // Show the user the direct reason from the backend (e.g., "Cannot attend: This event is already full!")
+    alert(error.message || "Something went wrong changing your attendance status.");
+  }
+};
 
   const [outbox, setOutbox] = useState(() => {
     const saved = localStorage.getItem("pending-actions");
@@ -274,30 +317,7 @@ function App() {
     }
   };
 
-  const checkServerStatus = async () => {
-    try {
-      await getGeneratorStatus(); // just check it doesn't throw
-      return true;                // any response = server is up
-    } catch (err) {
-      console.error('Health check failed', err);
-      return false;
-    }
-};
-
-  useEffect(() => {
-    const checkHealthAndSync = async () => {
-      const wasOffline = !isOnline;
-      const isUp = await checkServerStatus();
-      if (isUp) {
-        setIsOnline(true);
-        if (wasOffline || outbox.length > 0) syncOutbox();
-      } else {
-        setIsOnline(false);
-      }
-    };
-    const interval = setInterval(checkHealthAndSync, 5000);
-    return () => clearInterval(interval);
-  }, [isOnline, outbox.length, syncOutbox]);
+  // Health checks removed; rely on navigator.onLine and sync triggers
 
   const outboxRef = useRef(outbox);
     useEffect(() => {
@@ -308,7 +328,22 @@ function App() {
 useEffect(() => {
     const token = getToken();
     const wsBase = import.meta.env.VITE_API_URL || '';
-    const socket = new SockJS(`${wsBase}/ws-events${token ? `?token=${encodeURIComponent(token)}` : ''}`);
+    const pageProtocol = window.location.protocol === 'https:' ? 'https:' : 'http:';
+    let sockUrl = wsBase;
+
+    if (wsBase) {
+      try {
+        const parsed = new URL(wsBase);
+        parsed.protocol = pageProtocol;
+        sockUrl = parsed.toString().replace(/\/+$/, '');
+      } catch (error) {
+        sockUrl = wsBase;
+      }
+    } else {
+      sockUrl = `${pageProtocol}//${window.location.host}`;
+    }
+
+    const socket = new SockJS(`${sockUrl}/ws-events${token ? `?token=${encodeURIComponent(token)}` : ''}`);
     const stompClient = Stomp.over(socket);
     stompClient.debug = null;
     const connectHeaders = token ? { Authorization: `Bearer ${token}` } : {};
@@ -319,16 +354,19 @@ useEffect(() => {
           const raw = JSON.parse(message.body);
           const serverEvents = (Array.isArray(raw) ? raw : [raw]).map(normalizeEvent);
           setEvents(prev => {
-            const remainingPending = prev.filter(pe => {
-              if (!String(pe.Id).startsWith('pending-')) return false;
-              return !serverEvents.some(se => 
-                (se.Title || '').trim().toLowerCase() === (pe.Title || '').trim().toLowerCase()
-              );
-            });
-            const filteredServerEvents = serverEvents.filter(se => 
-              !outboxRef.current.some(action => action.type === 'DELETE' && action.id === se.Id)
-            );
-            return [...remainingPending, ...filteredServerEvents];
+              const remainingPending = prev.filter(pe => {
+                  if (!String(pe.Id).startsWith('pending-')) return false;
+                  return !serverEvents.some(se =>
+                      (se.Title || '').trim().toLowerCase() === (pe.Title || '').trim().toLowerCase()
+                  );
+              });
+              const mergedServerEvents = serverEvents.filter(se =>
+                  !outboxRef.current.some(action => action.type === 'DELETE' && action.id === se.Id)
+              ).map(se => {
+                  const existing = prev.find(pe => String(pe.Id) === String(se.Id));
+                  return existing && !existing.isPending ? { ...existing, ...se } : se;
+              });
+              return [...remainingPending, ...mergedServerEvents];
           });
         }
       });
@@ -375,42 +413,53 @@ useEffect(() => {
   }
   
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/events" element={
-            <Events 
-              events={events} attendingIds={attendingIds} 
-              onAttend={(id) => setAttendingIds(prev => prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id])}
-              onDelete={deleteEvent} isOnline={isOnline} 
-              onLoadMore={() => loadPage(currentPage + 1)} hasMore={hasMore}
-            />
-          } 
-        />
-        <Route path="/create" element={
-          <ProtectedRoute element={<CreateEvent saveEvent={saveEvent} deleteEvent={deleteEvent} />} />
-        } />
-        <Route path="/event/:Id" element={<EventDetails />} />
-        <Route path="/login" element={<Login/>}/>
-        <Route path="/signup" element={<Register />} />
-        <Route 
-          path="/admin/logs" 
-          element={isAdmin() ? <AdminDashboard /> : <Navigate to="/events" />} 
-        />
-        <Route path="/chat" element={<ProtectedRoute element={<Chat />} />} />
-        <Route path="/my-events" element={
-          <ProtectedRoute element={<Events 
-            events={events.filter(e => attendingIds.includes(e.Id))} 
+  <BrowserRouter>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/events" element={
+          <Events 
+            events={events} 
             attendingIds={attendingIds} 
-            onAttend={(id) => setAttendingIds(prev => prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id])}
-            isMyEventsPage={true} isOnline={isOnline}
-          />} />
-        } />  
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/reset-password" element={<ResetPassword />} /> 
-      </Routes>
-    </BrowserRouter>
-  );
+            onAttend={handleAttendToggle}
+            onDelete={deleteEvent} 
+            isOnline={isOnline} 
+            onLoadMore={() => loadPage(currentPage + 1)} 
+            hasMore={hasMore}
+          />
+        } 
+      />
+      <Route path="/create" element={
+        <ProtectedRoute element={<CreateEvent saveEvent={saveEvent} deleteEvent={deleteEvent} />} />
+      } />
+      <Route path="/profile" element={<ProtectedRoute element={<Profile />} />} />
+      <Route path="/event/:Id" element={<EventDetails />} />
+      <Route path="/login" element={<Login/>}/>
+      <Route path="/signup" element={<Register />} />
+      <Route 
+        path="/admin/logs" 
+        element={isAdmin() ? <AdminDashboard /> : <Navigate to="/events" />} 
+      />
+      <Route path="/chat" element={<ProtectedRoute element={<Chat />} />} />
+      <Route path="/my-events" element={
+        <ProtectedRoute element={<Events 
+          events={events.filter(e => attendingIds.includes(e.Id))} 
+          attendingIds={attendingIds} 
+          onAttend={handleAttendToggle} 
+          isMyEventsPage={true} 
+          isOnline={isOnline}
+        />} />
+      } />  
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/reset-password" element={<ResetPassword />} /> 
+      <Route path="/voice" element={<VoiceFeed />} />
+      <Route path="/challenge" element={<ChallengePage />} />
+      <Route path="/admin" element={<AdminDashboard />} />
+      <Route path="/connect" element={<ConnectPage />} />
+      <Route path="/poetry" element={<PoetryBoard/>}/>
+      <Route path="/quiz" element={<QuizPage />} />
+    </Routes>
+  </BrowserRouter>
+);
 }
 
 export default App;

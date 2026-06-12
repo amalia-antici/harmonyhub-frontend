@@ -59,6 +59,31 @@ export function saveSession(userData) {
   window.dispatchEvent(new Event('storage'));
 }
 
+export async function updateCurrentUser(updates) {
+  const token = getToken(); // Extract your session authentication token
+  
+  const response = await fetch(`${BASE_URL}/api/auth/profile`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}` // Protect the route with your existing session JWT
+    },
+    body: JSON.stringify(updates),
+  });
+
+  if (!response.ok) {
+    const errorMsg = await response.text();
+    throw new Error(errorMsg || 'Failed to update profile on the server.');
+  }
+
+  const updatedUserFromServer = await response.json();
+
+  // Keep your local client storage perfectly synced with your persistent database row modifications
+  writeStorageItem(AUTH_KEYS.USER, LEGACY_KEYS.USER, JSON.stringify(updatedUserFromServer));
+  
+  return updatedUserFromServer;
+}
+
 export function clearSession() {
   localStorage.removeItem(AUTH_KEYS.USER);
   localStorage.removeItem(AUTH_KEYS.TOKEN);

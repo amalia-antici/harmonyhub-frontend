@@ -1,0 +1,147 @@
+/* Card Container styled precisely like your event grid tiles */
+.voice-post-card {
+  background: #ffffff;
+  border: 1px solid #eae2d5;
+  border-radius: 16px;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+  transition: transform 0.2s ease;
+}
+
+/* User Profile Header section */
+.post-author {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.author-avatar, .comment-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #eae2d5;
+}
+
+.comment-avatar {
+  width: 32px;
+  height: 32px;
+}
+
+.anonymous-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #ebdcb9;
+  color: #61563f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.post-author span {
+  font-weight: 600;
+  color: #222;
+  font-size: 0.95rem;
+}
+
+/* HTML Audio Player customization placeholder */
+.audio-player {
+  width: 100%;
+  margin: 0.5rem 0 1rem 0;
+  border-radius: 8px;
+}
+
+.post-description {
+  color: #444;
+  font-size: 1rem;
+  line-height: 1.5;
+  margin: 0 0 1.25rem 0;
+}
+
+/* Small UI action buttons */
+.btn-comments {
+  background: none;
+  border: 1px solid #222;
+  color: #222;
+  padding: 0.4rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-comments:hover {
+  background-color: #222;
+  color: #fff;
+}
+
+/* Nesting Commentary Section */
+.comments-section {
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #f0e6d2;
+}
+
+.comment {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  background-color: #faf6ee;
+  padding: 0.75rem;
+  border-radius: 12px;
+}
+
+.comment-username {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: #222;
+  display: block;
+  margin-bottom: 0.15rem;
+}
+
+.comment p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #444;
+}
+
+/* Inline Comment submission form field */
+.comment-form {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.comment-form input {
+  flex: 1;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #dcd1be;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.comment-form input:focus {
+  outline: none;
+  border-color: #f5b800;
+}
+
+.comment-form button {
+  background-color: #222;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.comment-form button:hover {
+  background-color: #444;
+}

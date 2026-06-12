@@ -1,0 +1,168 @@
+/* Container and layout matching your main page style */
+.voice-feed-container {
+  max-width: 650px;
+  margin: 2rem auto;
+  padding: 0 1.5rem;
+  font-family: inherit;
+}
+
+.voice-feed-title {
+  font-size: 1.8rem;
+  color: #222;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+}
+
+/* Post Creation Box styled like your event filter panels */
+.create-post {
+  background-color: #fff8ee; /* Soft warm background seen in filters */
+  border: 1px solid #f3e5d0;
+  border-radius: 16px;       /* Smooth rounded corners from cards */
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.create-post h3 {
+  margin-top: 0;
+  color: #333;
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+/* Text area matching your application text inputs */
+.create-post textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #dcd1be;
+  border-radius: 8px;
+  background-color: #fff;
+  color: #222;
+  font-family: inherit;
+  font-size: 0.95rem;
+  resize: vertical;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+}
+
+.create-post textarea:focus {
+  outline: none;
+  border-color: #f5b800; /* Accent color matching buttons */
+}
+
+/* Base button layouts styling */
+.btn-post-anonymous, .btn-load-more {
+  background-color: #f5b800; /* Warm golden brand accent */
+  color: #222;
+  border: none;
+  padding: 0.75rem 1.2rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border-radius: 20px;       /* Pill shape from filter controls */
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.btn-post-anonymous:hover:not(:disabled), .btn-load-more:hover {
+  background-color: #e0a700;
+}
+
+.btn-post-anonymous:disabled {
+  background-color: #e6decb;
+  color: #8c8270;
+  cursor: not-allowed;
+}
+
+.btn-load-more {
+  width: 100%;
+  margin-top: 1.5rem;
+  background-color: #222; /* High contrast secondary look */
+  color: #fff;
+}
+
+.btn-load-more:hover {
+  background-color: #444;
+}
+
+.error-message {
+  color: #ff4d4d;
+  font-size: 0.85rem;
+  margin: 0.5rem 0 0 0;
+}
+
+/* Container to center the button nicely on the feed page */
+.load-more-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+/* Styled Load More Button */
+.btn-load-more {
+  background-color: transparent;
+  color: #222222;
+  border: 2px solid #222222;
+  padding: 0.75rem 2.5rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
+  border-radius: 25px; /* Pill shape matching your reset filters/edit buttons */
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  transition: all 0.25s ease;
+}
+
+/* Clean inverse hover effect */
+.btn-load-more:hover {
+  background-color: #222222;
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+}
+
+/* Subtle click animation */
+.btn-load-more:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+}
+
+/* Prettified Post Anonymously Button */
+.btn-post-anonymous {
+  background-color: #f5b800; /* Warm golden brand accent */
+  color: #222222;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border-radius: 25px;       /* Sleek pill shape matching layout */
+  cursor: pointer;
+  box-shadow: 0 3px 8px rgba(245, 184, 0, 0.25);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+}
+
+/* Hover State */
+.btn-post-anonymous:hover:not(:disabled) {
+  background-color: #e0a700;
+  transform: translateY(-1px); /* Subtle lift */
+  box-shadow: 0 5px 12px rgba(224, 167, 0, 0.35);
+}
+
+/* Active Press State */
+.btn-post-anonymous:active:not(:disabled) {
+  transform: translateY(1px);  /* Click down effect */
+  box-shadow: 0 2px 4px rgba(224, 167, 0, 0.2);
+}
+
+/* Disabled State (When no audio is recorded yet) */
+.btn-post-anonymous:disabled {
+  background-color: #e6decb;
+  color: #8c8270;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}

@@ -1,0 +1,71 @@
+.poetry-main {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.poetry-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+/* The Songwriting Board Canvas */
+.poetry-canvas-zone {
+  background-color: #f7f5f0;
+  border: 2px dashed #ccc;
+  border-radius: 12px;
+  min-height: 200px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.canvas-placeholder {
+  color: #aaa;
+  font-style: italic;
+}
+
+.magnet-composition-line {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  width: 100%;
+}
+
+/* The Word Reservoir */
+.poetry-pool-zone {
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.magnets-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 1rem;
+}
+
+/* The actual physical magnet styling */
+.word-magnet {
+  background-color: #ffffff;
+  color: #111111;
+  padding: 6px 14px;
+  font-family: 'Courier New', Courier, monospace; /* Classic vintage typewriter look */
+  font-weight: bold;
+  border: 1px solid #222;
+  box-shadow: 2px 2px 0px #000000; /* Flat shadow to simulate 3D magnet depth */
+  cursor: grab;
+  user-select: none;
+  transition: transform 0.1s ease;
+}
+
+.word-magnet:active {
+  cursor: grabbing;
+  transform: scale(1.05);
+}

@@ -24,7 +24,8 @@ export default function Login() {
     try {
       const data = await loginStep1(username, password);
       setPartialToken(data.token);
-      setStep(2);
+      setSecurityQuestion(data.question);
+      setStep(3);
     } catch (err) {
       setError(err.message || 'Invalid username or password');
     } finally {
@@ -65,7 +66,7 @@ export default function Login() {
     }
   };
 
-  const stepLabels = ['Credentials', 'Email Verify', 'Security'];
+  const stepLabels = ['Credentials','Security'];
 
   return (
     <div className="login-page">
@@ -92,13 +93,14 @@ export default function Login() {
                 width: '32px', height: '32px', borderRadius: '50%',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 fontSize: '13px', fontWeight: '600',
-                backgroundColor: step > i + 1 ? '#4caf50' : step === i + 1 ? '#333' : '#ddd',
-                color: step >= i + 1 ? '#fff' : '#999',
+                backgroundColor: (i === 0 && step >= 1) || (i === 1 && step >= 3) ? 
+                  (step > (i === 0 ? 1 : 3) ? '#4caf50' : '#333') : '#ddd',
+                color: (i === 0 && step >= 1) || (i === 1 && step >= 3) ? '#fff' : '#999',
                 transition: 'all 0.3s ease'
               }}>
-                {step > i + 1 ? '✓' : i + 1}
+                {(i === 0 && step > 1) || (i === 1 && step > 3) ? '✓' : i + 1}
               </div>
-              <span style={{ fontSize: '11px', color: step === i + 1 ? '#333' : '#aaa' }}>{label}</span>
+              <span style={{ fontSize: '11px', color: '#aaa' }}>{label}</span>
             </div>
           ))}
         </div>
@@ -197,7 +199,7 @@ export default function Login() {
             </button>
 
             <div className="form-footer">
-              <button type="button" onClick={() => { setStep(2); setError(''); }}
+              <button type="button" onClick={() => { setStep(1); setError(''); }}
                 style={{ background: 'none', border: 'none', color: '#888', cursor: 'pointer', fontSize: '13px' }}>
                 ← Back
               </button>

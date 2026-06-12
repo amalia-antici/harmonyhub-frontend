@@ -18,14 +18,36 @@ export default function Register() {
   const [formData, setFormData] = useState({
     firstName: '', lastName: '', email: '', username: '', password: '',
     country: '', city: '', occupation: '', instagram: '', skills: '', bio: '',
+    photo: '',
     securityQuestion: '', securityAnswer: ''
   });
+  const [photoPreview, setPhotoPreview] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     const name = e.target.name === 'skills2' ? 'skills' : e.target.name;
     setFormData({ ...formData, [name]: e.target.value });
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      setError('Please select an image file.');
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) { // 5MB
+      setError('Image is too large (max 5MB).');
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      const dataUrl = reader.result;
+      setPhotoPreview(dataUrl);
+      setFormData(prev => ({ ...prev, photo: dataUrl }));
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleSubmit = async (e) => {
@@ -59,13 +81,18 @@ export default function Register() {
           <div className="register-header-section">
             <h2 className="section-title delay-1">Musician</h2>
             <div className="profile-upload">
-              <div className="profile-placeholder">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                  <circle cx="12" cy="7" r="4" />
-                </svg>
-              </div>
-              <span>+ add profile picture</span>
+              <label className="profile-placeholder" htmlFor="profileUpload">
+                {photoPreview ? (
+                  <img src={photoPreview} alt="preview" />
+                ) : (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                    <circle cx="12" cy="7" r="4" />
+                  </svg>
+                )}
+              </label>
+              <input id="profileUpload" type="file" accept="image/*" style={{ display: 'none' }} onChange={handleFileChange} />
+              <span style={{ marginLeft: 10, cursor: 'pointer' }} onClick={() => document.getElementById('profileUpload')?.click()}>+ add profile picture</span>
             </div>
             <h2 className="section-title delay-2">Register</h2>
           </div>

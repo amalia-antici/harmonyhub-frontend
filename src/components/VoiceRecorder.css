@@ -1,0 +1,76 @@
+.voice-recorder {
+  margin: 0.5rem 0 1.25rem 0;
+  padding: 1rem;
+  background-color: #ffffff;
+  border: 1px dashed #c4b69c; /* Clean technical accent border */
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+/* Recording flashing dot indicator status block */
+.recording-indicator {
+  color: #ff4d4d;
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin: 0 0 0.75rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  animation: pulse 1.5s infinite alternate;
+}
+
+@keyframes pulse {
+  from { opacity: 1; }
+  to { opacity: 0.4; }
+}
+
+/* Media manipulation functional buttons */
+.btn-record {
+  background-color: #fff;
+  color: #222;
+  border: 2px solid #222;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-record:hover {
+  background-color: #222;
+  color: #fff;
+}
+
+.btn-stop {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 0.5rem 1.2rem;
+  font-weight: 600;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.btn-stop:hover {
+  background-color: #cc3333;
+}
+
+.btn-discard {
+  display: block;
+  margin: 0.75rem auto 0 auto;
+  background: none;
+  border: none;
+  color: #8c7e65;
+  text-decoration: underline;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.btn-discard:hover {
+  color: #ff4d4d;
+}

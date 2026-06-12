@@ -1,0 +1,95 @@
+.note-modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(4px);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 200;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
+
+.note-modal {
+  background: #fff;
+  border-radius: 20px;
+  padding: 2.5rem;
+  width: 100%; max-width: 520px;
+  position: relative;
+  animation: slideUp 0.25s ease;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(30px); opacity: 0 }
+  to   { transform: translateY(0);    opacity: 1 }
+}
+
+.note-modal-close {
+  position: absolute; top: 1rem; right: 1rem;
+  background: none; border: none;
+  font-size: 1.2rem; cursor: pointer; color: #999;
+}
+
+.note-modal-header { text-align: center; margin-bottom: 2rem; }
+.note-modal-header h2 { margin: 0 0 0.5rem; font-size: 1.4rem; }
+.note-modal-header p  { margin: 0; color: #666; font-size: 0.9rem; }
+
+.notes-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+/* Last row: 3 items — center them */
+.notes-grid .note-btn:nth-child(5),
+.notes-grid .note-btn:nth-child(6),
+.notes-grid .note-btn:nth-child(7) {
+  grid-column: span 1;
+}
+.notes-grid::after {
+  content: '';
+  grid-column: span 1;
+}
+
+.note-btn {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 1rem 0.5rem;
+  border: 2px solid #eee;
+  border-radius: 14px;
+  background: #fafafa;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  gap: 0.3rem;
+}
+
+.note-btn:hover {
+  border-color: var(--note-color);
+  background: color-mix(in srgb, var(--note-color) 10%, white);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px color-mix(in srgb, var(--note-color) 30%, transparent);
+}
+
+.note-symbol {
+  font-size: 1.8rem;
+  color: var(--note-color);
+  line-height: 1;
+}
+
+.note-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #222;
+}
+
+.note-harmony {
+  font-size: 0.65rem;
+  color: #999;
+  text-align: center;
+}
+
+.note-hint {
+  text-align: center;
+  font-size: 0.8rem;
+  color: #aaa;
+  margin: 0;
+}
