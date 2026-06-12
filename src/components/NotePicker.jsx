@@ -8,7 +8,7 @@ const NOTES = [
   { note: 'FA',  label: 'Fa', harmony: 'Do',  color: '#2ecc71' },
   { note: 'SOL', label: 'Sol',harmony: 'Re',  color: '#1abc9c' },
   { note: 'LA',  label: 'La', harmony: 'Mi',  color: '#3498db' },
-  { note: 'SI',  label: 'Si', harmony: 'Fa#', color: '#9b59b6' },
+  { note: 'SI',  label: 'Si', harmony: 'Fa', color: '#9b59b6' },
 ];
 
 const NOTE_SYMBOLS = ['♩', '♪', '♫', '♬', '𝅗𝅥', '𝅘𝅥𝅮', '𝅘𝅥𝅯'];
