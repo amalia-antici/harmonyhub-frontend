@@ -124,7 +124,7 @@ export default function QuizPage() {
               </button>
               <button
                 className={`quiz-choice artist ${selected === 'SONGWRITER' ? 'chosen' : ''}`}
-                onClick={() => handleAnswer('ARTIST')}
+                onClick={() => handleAnswer('SONGWRITER')}
                 disabled={!!selected}
               >
                 <span className="choice-icon">🎵</span>
