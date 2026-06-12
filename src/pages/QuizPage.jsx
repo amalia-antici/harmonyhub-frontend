@@ -10,8 +10,8 @@ export default function QuizPage() {
   const [phase, setPhase] = useState(PHASES.INTRO);
   const [questions, setQuestions] = useState([]);
   const [current, setCurrent] = useState(0);
-  const [answers, setAnswers] = useState({});       // { questionId: 'SHAKESPEARE' | 'ARTIST' }
-  const [selected, setSelected] = useState(null);   // answer for current question
+  const [answers, setAnswers] = useState({});       
+  const [selected, setSelected] = useState(null);   
   const [results, setResults] = useState(null);
   const [leaderboard, setLeaderboard] = useState([]);
   const [loading, setLoading] = useState(false);

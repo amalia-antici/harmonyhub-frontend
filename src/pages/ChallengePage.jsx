@@ -36,7 +36,14 @@ export default function ChallengePage() {
 
   if (!challenge) return <div><Navbar /><p style={{textAlign:'center', marginTop:'4rem'}}>No active challenge right now. Check back soon!</p></div>;
 
-  const podium = [winners[1], winners[0], winners[2]].filter(Boolean); // 2nd, 1st, 3rd order
+  // 🛠️ FIX Step 1: Map the absolute real placements directly to the objects first
+  const mappedWinners = winners.map((w, index) => ({
+    ...w,
+    actualPlace: index + 1 // 1 for winners[0], 2 for winners[1], 3 for winners[2]
+  }));
+
+  // 🛠️ FIX Step 2: Now arrange them safely into the podium presentation layout array order (2nd, 1st, 3rd)
+  const podium = [mappedWinners[1], mappedWinners[0], mappedWinners[2]].filter(Boolean);
 
   return (
     <div className="challenge-page">
@@ -63,12 +70,15 @@ export default function ChallengePage() {
           <section className="winners-section">
             <h2>Our Winners</h2>
             <div className="podium">
-              {podium.map((w, i) => {
-                const place = i === 0 ? 2 : i === 1 ? 1 : 3;
+              {podium.map((w) => {
+                // 🛠️ FIX Step 3: Simply reference the locked-in property safely
+                const place = w.actualPlace; 
                 return (
                   <div key={w.id} className={`podium-card place-${place}`}>
                     <img src={w.userPhoto || '/profile-picture.png'} alt={w.username} />
-                    <span className="podium-place">{place === 1 ? '🥇' : place === 2 ? '🥈' : '🥉'}</span>
+                    <span className="podium-place">
+                      {place === 1 ? '🥇' : place === 2 ? '🥈' : '🥉'}
+                    </span>
                     <p className="podium-username">{w.username}</p>
                     {w.grade && <p className="podium-grade">{w.grade}/10</p>}
                     <a href={w.instagramLink} target="_blank" rel="noreferrer" className="podium-link">
