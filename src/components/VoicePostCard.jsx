@@ -13,17 +13,30 @@ export default function VoicePostCard({ post }) {
   // Countdown to reveal
   useEffect(() => {
     if (post.revealed) return;
+
     const update = () => {
-      const diff = new Date(post.revealAt) - new Date();
+      if (!post.revealAt) return;
+      let standardizedDateStr = post.revealAt.trim();
+      
+      standardizedDateStr = standardizedDateStr.replace(' ', 'T');
+
+      if (!standardizedDateStr.endsWith('Z') && !standardizedDateStr.includes('+')) {
+        standardizedDateStr = `${standardizedDateStr}Z`;
+      }
+
+      const diff = new Date(standardizedDateStr) - new Date();
+
       if (diff <= 0) {
         setTimeLeft('Revealing soon...');
         return;
       }
+
       const h = Math.floor(diff / 3600000);
       const m = Math.floor((diff % 3600000) / 60000);
       const s = Math.floor((diff % 60000) / 1000);
       setTimeLeft(`${h}h ${m}m ${s}s`);
     };
+
     update();
     const interval = setInterval(update, 1000);
     return () => clearInterval(interval);
